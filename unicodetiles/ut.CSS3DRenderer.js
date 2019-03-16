@@ -122,6 +122,12 @@ ut.CSS3DRenderer.prototype.render = function() {
 
                 } else if (ch == '@') {
                     newSpan = this.createVolume(`span_${j}_${i}`,i,j,[4,0,0,0,0,0, 0,0],ch,true)
+
+                } else if (ch == '☘') { // clover (example 5 - infinite forest)
+                    newSpan = this.createVolume(`span_${j}_${i}`,i,j,[4,0,0,0,0,0, 0,0],ch,true)
+
+                } else if (ch == '☁') { // rock (example 5 - infinite forest)
+                    newSpan = this.createVolume(`span_${j}_${i}`,i,j,[4,0,0,0,0,0, 0,0],ch,true)
                 }
 
                 this.spans[j][i].innerHTML = newSpan.innerHTML
@@ -171,7 +177,7 @@ ut.CSS3DRenderer.prototype.createFace = function(idxFace, styles=[0,0,0,0,0,0, 0
 ut.CSS3DRenderer.prototype.createVolume = function(id, x=0, y=0, styles=[0,0,0,0,0,0, 0,0], textContent='', drawText=false) {
     let faces = []
 
-    let sprites = '@M'.split('')
+    let sprites = '@M☘☁'.split('')
     let walls = '#▒'.split('')
     let floors = ' .'.split('')
 
@@ -249,11 +255,23 @@ ut.CSS3DRenderer.prototype.getVolumeData = function(span) {
     if (data.span.id !== span.id)
         console.warn('! SPAN ID\'S DO NOT MATCH !')
 
-    if (data.ch == '#') {
+    let sprites = '@M☘☁'.split('')
+    let walls = '#▒'.split('')
+    let floors = ' .'.split('')
+
+    let isSprite = sprites.includes(data.ch)
+    let isWall = !isSprite
+    let isFloor = isWall && floors.includes(data.ch)
+
+    if (isWall && !isFloor) {
         data.color = '#fff'
         data.background = '#f00'
 
-    } else if (data.ch == 'M') {
+    } else if (isFloor) {
+        data.color = '#fff'
+        data.background = '#000'
+
+    } else if (isSprite) {
         data.color = '#00f'
         data.background = '#000'
 
