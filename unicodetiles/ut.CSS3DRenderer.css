@@ -22,7 +22,7 @@ div#game {
 */
 
 /* over view */
-.css3d-scene { transform: rotateX(65deg) translateZ(-350px) translateX(-950px) translateY(-950px) rotateZ(0deg); }
+.css3d-scene { transform: rotateX(65deg) translateZ(-150px) translateX(-950px) translateY(-50px) rotateZ(-5deg); }
 
 .volume {
     display: inline-block;

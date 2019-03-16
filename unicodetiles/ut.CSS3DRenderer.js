@@ -15,29 +15,14 @@ ut.CSS3DRenderer = function(view) {
 	this.view = view;
     this.z = 0
 
-	// Create a matrix of <span> elements, cache references
+	// Create a matrix of .volume elements, cache references
 	this.spans = new Array(view.h);
 	this.colors = new Array(view.h);
 	for (var j = 0; j < view.h; ++j) {
 		this.spans[j] = new Array(view.w);
 		this.colors[j] = new Array(view.w);
 		for (var i = 0; i < view.w; ++i) {
-
-// FIXME: TEMPORARY
-if (i%2 && j%2) {
-    // draw monster cell
-    this.spans[j][i] = this.createVolume(`span_${j}_${i}`,i,j,[4,0,0,0,0,0, 1,1],'M',true)
-
-} else if ((i==0 || j==0) || i%6==0) {
-    // draw wall cell
-    this.spans[j][i] = this.createVolume(`span_${j}_${i}`,i,j,[4,3,3,3,3,3, 0,0],'#',true)
-
-} else {
-    // draw empty cell
-    this.spans[j][i] = this.createVolume(`span_${j}_${i}`,i,j,[4,0,0,0,0,0, 0,0],'',true)
-}
-// FIXME: END TEMPORARY
-
+            this.spans[j][i] = this.createVolume(`span_${j}_${i}`,i,j,[0,0,0,0,0,0, 0,0],'',true)
 			view.elem.appendChild(this.spans[j][i]);
 		}
 		// Line break
@@ -54,8 +39,7 @@ if (i%2 && j%2) {
 
 ut.CSS3DRenderer.prototype.updateStyle = function(s) {
 	"use strict";
-return
-
+    /*
 	s = window.getComputedStyle(this.spans[0][0], null);
 	this.tw = parseInt(s.width, 10);
 	if (this.tw === 0 || isNaN(this.tw)) return; // Nothing to do, exit
@@ -67,11 +51,14 @@ return
 			this.spans[j][i].style.width = this.tw + "px";
 		}
 	}
+    */
+
+    console.info('ut.CSS3DRenderer.updateStyle(): SKIP')
+    return
 };
 
 ut.CSS3DRenderer.prototype.clear = function() {
 	"use strict";
-return
 
 	for (var j = 0; j < this.view.h; ++j) {
 		for (var i = 0; i < this.view.w; ++i) {
@@ -82,7 +69,6 @@ return
 
 ut.CSS3DRenderer.prototype.render = function() {
 	"use strict";
-return
 
 	var w = this.view.w, h = this.view.h;
 	var buffer = this.view.buffer;
@@ -92,6 +78,8 @@ return
 		for (var i = 0; i < w; ++i) {
 			var tile = buffer[j][i];
 			var span = this.spans[j][i];
+
+            /*
 			// Check and update colors
 			var fg = tile.r === undefined ? defaultColor : tile.getColorRGB();
 			var bg = tile.br === undefined ? defaultBackground : tile.getBackgroundRGB();
@@ -111,6 +99,32 @@ return
                 //span.classList.remove('');
                 //span.classList.add('');
                 //spans.dataset.foo = '';
+            }
+            */
+
+            // Check and update volumes
+            // FIXME: update colors as in original
+            let ch = tile.getChar();
+            let volData = this.getVolumeData(span)
+            if (ch !== volData.ch) {
+                // tile has changed, create a temporary volume and swap it's contents into the rendered volume
+                // console.info(`ut.CSS3DRenderer.render(): j:${j}, i:${i}, tile ch:"${ch}", volume data:`, volData)
+                let newSpan = false
+
+                if (ch == ' ') {
+                    newSpan = this.createVolume(`span_${j}_${i}`,i,j,[0,0,0,0,0,0, 0,0],'',true)
+
+                } if (ch == '.') {
+                    newSpan = this.createVolume(`span_${j}_${i}`,i,j,[4,0,0,0,0,0, 0,0],'',true)
+
+                } else if (ch == '▒') {
+                    newSpan = this.createVolume(`span_${j}_${i}`,i,j,[1,1,1,1,1,1, 0,0],ch,true)
+
+                } else if (ch == '@') {
+                    newSpan = this.createVolume(`span_${j}_${i}`,i,j,[4,0,0,0,0,0, 0,0],ch,true)
+                }
+
+                this.spans[j][i].innerHTML = newSpan.innerHTML
             }
 		}
 	}
@@ -156,7 +170,14 @@ ut.CSS3DRenderer.prototype.createFace = function(idxFace, styles=[0,0,0,0,0,0, 0
 
 ut.CSS3DRenderer.prototype.createVolume = function(id, x=0, y=0, styles=[0,0,0,0,0,0, 0,0], textContent='', drawText=false) {
     let faces = []
-    let isSprite = textContent=='M' // FIXME: SUPPORT OTHER CHARS AS SPRITES
+
+    let sprites = '@M'.split('')
+    let walls = '#▒'.split('')
+    let floors = ' .'.split('')
+
+    let isSprite = sprites.includes(textContent)
+    let isWall = !isSprite
+    let isFloor = isWall && floors.includes(textContent)
 
     for (let i=0; i < 8; i++) {
         let tmpDrawText = drawText
@@ -171,8 +192,14 @@ ut.CSS3DRenderer.prototype.createVolume = function(id, x=0, y=0, styles=[0,0,0,0
 
         } else {
             // not a sprite, only drawText on exterior faces
-            if (i >= 6)
-                tmpDrawText = false
+            if (isFloor) {
+                if (i > 0)
+                    tmpDrawText = false
+
+            } else {
+                if (i >= 6)
+                    tmpDrawText = false
+            }
         }
 
         faces.push(this.createFace(i, styles, textContent, tmpDrawText, drawMode))
@@ -198,4 +225,42 @@ ut.CSS3DRenderer.prototype.tick = function() {
 
     if (++this.z > 359)
         this.z = 0
+}
+
+// get color & character data from a volume
+ut.CSS3DRenderer.prototype.getVolumeData = function(span) {
+    let data = {
+        ch: ' ',
+        x: 0,
+        y: 0,
+        color: '#000',
+        background: '#000',
+        span: false,
+    }
+
+    data.ch = span && span.innerText && span.innerText.replace(/\n/g,'').replace(/ /g, '').split('')[0]
+    if (data.ch == '' || data.ch.length < 1)
+        data.ch = ' '
+
+    data.y = span && span.dataset && span.dataset.y
+    data.x = span && span.dataset && span.dataset.x
+
+    data.span = document.querySelector(`[data-x*="${data.x}"][data-y*="${data.y}"]`) 
+    if (data.span.id !== span.id)
+        console.warn('! SPAN ID\'S DO NOT MATCH !')
+
+    if (data.ch == '#') {
+        data.color = '#fff'
+        data.background = '#f00'
+
+    } else if (data.ch == 'M') {
+        data.color = '#00f'
+        data.background = '#000'
+
+    } else {
+        data.color = '#ff0'
+        data.background = '#0f0'
+    }
+
+    return data
 }
