@@ -28,6 +28,10 @@ if (i%2 && j%2) {
     // draw monster cell
     this.spans[j][i] = this.createVolume(`span_${j}_${i}`,i,j,[4,0,0,0,0,0, 1,1],'M',true)
 
+} else if (i==0 || j==0) {
+    // draw wall cell
+    this.spans[j][i] = this.createVolume(`span_${j}_${i}`,i,j,[4,3,3,3,3,3, 0,0],'#',true)
+
 } else {
     // draw empty cell
     this.spans[j][i] = this.createVolume(`span_${j}_${i}`,i,j,[4,0,0,0,0,0, 0,0],'',true)
