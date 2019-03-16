@@ -11,11 +11,18 @@ div#game {
 }
 
 * { transform-style: preserve-3d; box-sizing: border-box; }
-.css3d-viewport { width: 600px; height: 400px; overflow: hidden; perspective: 400px; }
+.css3d-viewport { width: 800px; height: 800px; overflow: hidden; perspective: 400px; }
 .css3d-camera { width: 0px; height: 0px; position: relative; left: 300px; top: 200px; }
 .css3d-scene { width: 1312px; height: 800px; transform-origin: 0 0; background-color: #00a; }
 
+/* close view (default) */
+/* FIXME */
+/*
 .css3d-scene { transform: rotateX(65deg) translateZ(-0px) translateX(-200px) translateY(60px) rotateZ(-5deg); }
+*/
+
+/* over view */
+.css3d-scene { transform: rotateX(65deg) translateZ(-350px) translateX(-950px) translateY(-950px) rotateZ(0deg); }
 
 .volume {
     display: inline-block;
