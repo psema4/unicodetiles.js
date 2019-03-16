@@ -1,0 +1,121 @@
+/* ut.CSS3DRenderer.css */
+
+/* override font-size:16px on #game */
+div#game {
+    font-size:32px;
+}
+
+/* override height:1em on .unicodetiles div */
+.unicodetiles div {
+    height: 32px;
+}
+
+* { transform-style: preserve-3d; box-sizing: border-box; }
+.css3d-viewport { width: 600px; height: 400px; overflow: hidden; perspective: 400px; }
+.css3d-camera { width: 0px; height: 0px; position: relative; left: 300px; top: 200px; }
+.css3d-scene { width: 1312px; height: 800px; transform-origin: 0 0; background-color: #00a; }
+
+.css3d-scene { transform: rotateX(65deg) translateZ(-0px) translateX(-200px) translateY(60px) rotateZ(-5deg); }
+
+.volume {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    font-size: 26px;
+    color: #afa;
+}
+
+.volume div {
+    margin:0px;
+    padding:0px;
+}
+
+/* bottom */
+.face0 {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 32px;
+    height: 32px;
+    transform: rotateX(0deg) translateY(0px);
+    border: 1px dashed #040;
+}
+
+/* top */
+.face1 {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 32px;
+    height: 32px;
+    transform: rotateX(0deg) translateZ(32px);
+}
+
+/* far */
+.face2 {
+    position: absolute;
+    left: 0px;
+    top: -16px;
+    width: 32px;
+    height: 32px;
+    transform: rotateX(90deg) translateY(16px);
+}
+
+/* near */
+.face3 {
+    position: absolute;
+    left: 0px;
+    top: 16px;
+    width: 32px;
+    height: 32px;
+    transform: rotateX(90deg) translateY(16px) rotateZ(180deg) rotateY(180deg);
+}
+
+/* left */
+.face4 {
+    position: absolute;
+    left: -16px;
+    top: 0px;
+    width: 32px;
+    height: 32px;
+    transform: rotateX(90deg) rotateY(90deg) translateY(16px) rotateZ(180deg) rotateY(180deg);
+}
+
+/* right */
+.face5 {
+    position: absolute;
+    left: 16px;
+    top: 0px;
+    width: 32px;
+    height: 32px;
+    transform: rotateX(90deg) rotateY(90deg) translateY(16px);
+}
+
+/* face-on, centered */
+.face6 {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 32px;
+    height: 32px;
+    transform: rotateX(90deg) translateY(16px) rotateZ(180deg) rotateY(180deg);
+}
+
+/* edge-on, centered */
+.face7 {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 32px;
+    height: 32px;
+    transform: rotateX(90deg) rotateY(90deg) translateY(16px) rotateZ(180deg) rotateY(180deg);
+}
+
+.transparent { background-color: transparent; }
+.black { background-color: #000; }
+.white { background-color: #fff; }
+.red { background-color: #f00; }
+.green { background-color: #0f0; }
+.blue { background-color: #00f; }
+.yellow { background-color: #ff0; }
+
