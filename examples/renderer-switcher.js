@@ -7,7 +7,10 @@ function createRendererSwitcher(doSwitch) {
 	if (curR === "webgl") {
 		nextR = "canvas";
 		pretty = "&lt;canvas&gt;";
-	} else if (curR === "canvas") {
+    } else if (curR === "canvas") {
+        nextR = "css3d";
+        pretty = "&lt;css3d&gt;";
+	} else if (curR === "css3d") {
 		nextR = "dom";
 		pretty = "DOM";
 	} else {

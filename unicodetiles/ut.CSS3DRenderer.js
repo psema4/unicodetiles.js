@@ -10,7 +10,7 @@
 /// Renders the <Viewport> into DOM elements.
 ///
 /// *Note:* This is an internal class used by <Viewport>
-ut.DOMRenderer = function(view) {
+ut.CSS3DRenderer = function(view) {
 	"use strict";
 	this.view = view;
     this.z = 0
@@ -28,7 +28,7 @@ if (i%2 && j%2) {
     // draw monster cell
     this.spans[j][i] = this.createVolume(`span_${j}_${i}`,i,j,[4,0,0,0,0,0, 1,1],'M',true)
 
-} else if (i==0 || j==0) {
+} else if ((i==0 || j==0) || i%6==0) {
     // draw wall cell
     this.spans[j][i] = this.createVolume(`span_${j}_${i}`,i,j,[4,3,3,3,3,3, 0,0],'#',true)
 
@@ -52,7 +52,7 @@ if (i%2 && j%2) {
     // setInterval(function() { ut.viewportStyleUpdaterHack.tick() }, 1000)
 };
 
-ut.DOMRenderer.prototype.updateStyle = function(s) {
+ut.CSS3DRenderer.prototype.updateStyle = function(s) {
 	"use strict";
 return
 
@@ -69,7 +69,7 @@ return
 	}
 };
 
-ut.DOMRenderer.prototype.clear = function() {
+ut.CSS3DRenderer.prototype.clear = function() {
 	"use strict";
 return
 
@@ -80,7 +80,7 @@ return
 	}
 };
 
-ut.DOMRenderer.prototype.render = function() {
+ut.CSS3DRenderer.prototype.render = function() {
 	"use strict";
 return
 
@@ -118,7 +118,7 @@ return
 
 ut.viewportStyleUpdaterHack = null;
 
-ut.DOMRenderer.prototype.createFace = function(idxFace, styles=[0,0,0,0,0,0, 0,0], textContent='', drawText=false, drawMode=0) {
+ut.CSS3DRenderer.prototype.createFace = function(idxFace, styles=[0,0,0,0,0,0, 0,0], textContent='', drawText=false, drawMode=0) {
     let classNames = [
         'transparent',  // 0
         'black',        // 1
@@ -154,7 +154,7 @@ ut.DOMRenderer.prototype.createFace = function(idxFace, styles=[0,0,0,0,0,0, 0,0
     return template
 }
 
-ut.DOMRenderer.prototype.createVolume = function(id, x=0, y=0, styles=[0,0,0,0,0,0, 0,0], textContent='', drawText=false) {
+ut.CSS3DRenderer.prototype.createVolume = function(id, x=0, y=0, styles=[0,0,0,0,0,0, 0,0], textContent='', drawText=false) {
     let faces = []
     let isSprite = textContent=='M' // FIXME: SUPPORT OTHER CHARS AS SPRITES
 
@@ -189,7 +189,7 @@ ut.DOMRenderer.prototype.createVolume = function(id, x=0, y=0, styles=[0,0,0,0,0
 }
 
 // auto-rotate camera
-ut.DOMRenderer.prototype.tick = function() {
+ut.CSS3DRenderer.prototype.tick = function() {
     this.z = this.z || 0
 
     let sceneTransform = `rotateX(65deg) translateZ(-0px) translateX(-200px) translateY(60px) rotateZ(-${this.z}deg)`

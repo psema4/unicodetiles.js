@@ -15,11 +15,10 @@
 	<link href="style.css" rel="stylesheet" type="text/css" />
 
 	<script src="../unicodetiles/unicodetiles.js"></script>
-    <!--
 	<script src="../unicodetiles/ut.WebGLRenderer.js"></script>
 	<script src="../unicodetiles/ut.CanvasRenderer.js"></script>
-    -->
 	<script src="../unicodetiles/ut.CSS3DRenderer.js"></script>
+	<script src="../unicodetiles/ut.DOMRenderer.js"></script>
 	<script src="../unicodetiles/input.js"></script>
 	<script src="renderer-switcher.js"></script>
 	<!--
@@ -28,14 +27,14 @@
 	<script src="simple-dungeon.js"></script>
 </head>
 
-<body onload="initSimpleDungeon(); /* createRendererSwitcher(); */">
+<body onload="initSimpleDungeon(); createRendererSwitcher();">
 
 	<p class="centerer">Move around with arrow keys.</p>
 
 	<div class="centerer">
-        <div class="css3d-viewport">
-            <div class="css3d-camera">
-		        <div id="game" class="css3d-scene">Enable JavaScript and reload the page.</div>
+        <div id="c3vp" class="">
+            <div id="c3c" class="">
+		        <div id="game" class="">Enable JavaScript and reload the page.</div>
             </div>
         </div>
 	</div>

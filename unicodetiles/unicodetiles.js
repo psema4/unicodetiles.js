@@ -18,7 +18,7 @@ var ut = ut || {};
 /// NULLCHAR - Character used when none is specified otherwise.
 /// CSSCLASS - The CSS class name used for the tile engine element.
 /// NULLTILE - The tile used as placeholder for empty tile.
-ut.VERSION = "2.1";
+ut.VERSION = "2.1-css3d";
 ut.NULLCHAR = " ";
 ut.CSSCLASS = "unicodetiles";
 ut.NULLTILE = {}; // Initialized properly after ut.Tile is defined
@@ -199,12 +199,27 @@ ut.Viewport = function(elem, w, h, renderer, squarify) {
 				this.renderer = new ut.CanvasRenderer(this);
 			} catch (e) {
 				console.error(e);
+				newrenderer = "css3d";
+				this.elem.innerHTML = "";
+			}
+		}
+		if (newrenderer === "css3d") {
+			try {
+				this.renderer = new ut.CSS3DRenderer(this);
+                document.querySelector('#c3vp').classList.add('css3d-viewport')
+                document.querySelector('#c3c').classList.add('css3d-camera')
+                document.querySelector('#game').classList.add('css3d-scene')
+			} catch (e) {
+				console.error(e);
 				newrenderer = "dom";
 				this.elem.innerHTML = "";
 			}
 		}
 		if (newrenderer === "dom") {
 			this.renderer = new ut.DOMRenderer(this);
+            document.querySelector('#c3vp').classList.remove('css3d-viewport')
+            document.querySelector('#c3c').classList.remove('css3d-camera')
+            document.querySelector('#game').classList.remove('css3d-scene')
 		}
 		this.updateStyle(false);
 	};
@@ -220,6 +235,7 @@ ut.Viewport = function(elem, w, h, renderer, squarify) {
 	ut.Viewport.prototype.getRendererString = function() {
 		if (this.renderer instanceof ut.WebGLRenderer) return "webgl";
 		if (this.renderer instanceof ut.CanvasRenderer) return "canvas";
+		if (this.renderer instanceof ut.CSS3DRenderer) return "css3d";
 		if (this.renderer instanceof ut.DOMRenderer) return "dom";
 		return "";
 	};
