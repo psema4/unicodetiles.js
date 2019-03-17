@@ -103,19 +103,19 @@ ut.CSS3DRenderer.prototype.render = function() {
                     newSpan = this.createVolume(`span_${j}_${i}`,i,j,[0,0,0,0,0,0, 0,0],'',true)
 
                 } if (ch == '.') {
-                    newSpan = this.createVolume(`span_${j}_${i}`,i,j,[4,0,0,0,0,0, 0,0],'',true)
+                    newSpan = this.createVolume(`span_${j}_${i}`,i,j,[0,0,0,0,0,0, 0,0],ch,true)
 
                 } else if (ch == '#' || ch == '▒') {
                     newSpan = this.createVolume(`span_${j}_${i}`,i,j,[1,1,1,1,1,1, 0,0],ch,true)
 
                 } else if (ch == '@') {
-                    newSpan = this.createVolume(`span_${j}_${i}`,i,j,[4,0,0,0,0,0, 0,0],ch,true)
+                    newSpan = this.createVolume(`span_${j}_${i}`,i,j,[0,0,0,0,0,0, 0,0],ch,true)
 
                 } else if (ch == '☘') { // clover (example 5 - infinite forest)
-                    newSpan = this.createVolume(`span_${j}_${i}`,i,j,[4,0,0,0,0,0, 0,0],ch,true)
+                    newSpan = this.createVolume(`span_${j}_${i}`,i,j,[0,0,0,0,0,0, 0,0],ch,true)
 
                 } else if (ch == '☁') { // rock (example 5 - infinite forest)
-                    newSpan = this.createVolume(`span_${j}_${i}`,i,j,[4,0,0,0,0,0, 0,0],ch,true)
+                    newSpan = this.createVolume(`span_${j}_${i}`,i,j,[0,0,0,0,0,0, 0,0],ch,true)
                 }
 
                 this.spans[j][i].innerHTML = newSpan.innerHTML

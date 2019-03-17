@@ -27,7 +27,6 @@ div#game {
 
 .volume div {
     margin:0px;
-    padding:0px;
 }
 
 /* bottom */
@@ -38,7 +37,7 @@ div#game {
     width: 32px;
     height: 32px;
     transform: rotateX(0deg) translateY(0px);
-    border: 1px dashed #040;
+    /* border: 1px dashed #040; */ /* uncomment to show grid */
 }
 
 /* top */
@@ -99,6 +98,8 @@ div#game {
     width: 32px;
     height: 32px;
     transform: rotateX(90deg) translateY(16px) rotateZ(180deg) rotateY(180deg);
+    padding-top: 10px;
+    overflow: hidden;
 }
 
 /* edge-on, centered */
@@ -109,6 +110,8 @@ div#game {
     width: 32px;
     height: 32px;
     transform: rotateX(90deg) rotateY(90deg) translateY(16px) rotateZ(180deg) rotateY(180deg);
+    padding-top: 10px;
+    overflow: hidden;
 }
 
 .transparent { background-color: transparent; }

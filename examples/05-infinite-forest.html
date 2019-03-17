@@ -19,6 +19,13 @@
 	<!-- We are extending the fov-dungeon example -->
 	<script src="fov.js"></script>
 	<script>
+        // set default scene transform
+        function rendererPreInit() {
+            if (ut.viewportStyleUpdaterHack && ut.viewportStyleUpdaterHack.setSceneTransform)
+                ut.viewportStyleUpdaterHack.defaultSceneTransform = 'rotateX(60deg) translateZ(-10px) translateX(-655px) translateY(-50px) rotateZ(0deg)'
+
+        }
+
 		// Poor pseudo random number generator
 		var A = 2971215073, B = 479001599, M = 1048573;
 		function rand(x, y) {
