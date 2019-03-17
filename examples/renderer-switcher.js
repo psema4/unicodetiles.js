@@ -19,6 +19,17 @@ function createRendererSwitcher(doSwitch) {
 	}
 	// Do we switch?
 	if (doSwitch) {
+        // reset camera & scene
+        let camera = document.querySelector('.css3d-camera')
+        if (camera) {
+            camera.style.top = '0px';
+            camera.style.left = '0px';
+        }
+
+        let scene = document.querySelector('.css3d-scene')
+        if (scene)
+            scene.style.transform = ''
+
 		term.setRenderer(nextR);
 		term.render();
 		createRendererSwitcher(); // Call again to update, but this time no switching

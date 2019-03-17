@@ -17,6 +17,13 @@
 	<!-- We are extending the simple-dungeon example -->
 	<script src="simple-dungeon.js"></script>
 	<script>
+        // will be called, if exists, when instantiating a ut.CSS3DRenderer
+        function rendererPreInit() {
+            // override default scene transform
+            if (ut.viewportStyleUpdaterHack && ut.viewportStyleUpdaterHack.setSceneTransform)
+                ut.viewportStyleUpdaterHack.defaultSceneTransform = 'rotateX(10deg) translateZ(-10px) translateX(-480px) translateY(-250px) rotateZ(-5deg)'
+        }
+
 		function squarify() {
 			// Squarify leaves gaps, so change the wall character
 			WALL = new ut.Tile('#', 100, 100, 100);

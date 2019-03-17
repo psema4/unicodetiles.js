@@ -14,6 +14,7 @@ ut.CSS3DRenderer = function(view) {
 	"use strict";
 	this.view = view;
     this.z = 0
+    this.defaultSceneTransform = 'rotateX(10deg) translateZ(-10px) translateX(-680px) translateY(-250px) rotateZ(-5deg)'
 
 	// Create a matrix of .volume elements, cache references
 	this.spans = new Array(view.h);
@@ -31,6 +32,8 @@ ut.CSS3DRenderer = function(view) {
 	}
 
 	ut.viewportStyleUpdaterHack = this;
+    if (typeof rendererPreInit === 'function')
+        rendererPreInit()
     setTimeout(function() { ut.viewportStyleUpdaterHack.updateStyle(); }, 0);
 
     // FIXME: LAUNCH FROM CONSOLE OR UI
@@ -39,22 +42,7 @@ ut.CSS3DRenderer = function(view) {
 
 ut.CSS3DRenderer.prototype.updateStyle = function(s) {
 	"use strict";
-    /*
-	s = window.getComputedStyle(this.spans[0][0], null);
-	this.tw = parseInt(s.width, 10);
-	if (this.tw === 0 || isNaN(this.tw)) return; // Nothing to do, exit
-	this.th = parseInt(s.height, 10);
-	if (this.view.squarify) this.tw = this.th;
-	var w = this.view.w, h = this.view.h;
-	for (var j = 0; j < h; ++j) {
-		for (var i = 0; i < w; ++i) {
-			this.spans[j][i].style.width = this.tw + "px";
-		}
-	}
-    */
-
-    console.info('ut.CSS3DRenderer.updateStyle(): SKIP')
-    return
+    this.resetSceneTransform()
 };
 
 ut.CSS3DRenderer.prototype.clear = function() {
@@ -117,7 +105,7 @@ ut.CSS3DRenderer.prototype.render = function() {
                 } if (ch == '.') {
                     newSpan = this.createVolume(`span_${j}_${i}`,i,j,[4,0,0,0,0,0, 0,0],'',true)
 
-                } else if (ch == '▒') {
+                } else if (ch == '#' || ch == '▒') {
                     newSpan = this.createVolume(`span_${j}_${i}`,i,j,[1,1,1,1,1,1, 0,0],ch,true)
 
                 } else if (ch == '@') {
@@ -281,4 +269,44 @@ ut.CSS3DRenderer.prototype.getVolumeData = function(span) {
     }
 
     return data
+}
+
+ut.CSS3DRenderer.prototype.getSceneTransform = function() {
+    let scene = document.querySelector('.css3d-scene')
+    return scene && scene.style.transform || ''
+}
+
+ut.CSS3DRenderer.prototype.resetSceneTransform = function() {
+    this.setSceneTransform(this.defaultSceneTransform)
+    this.setCameraPosition(0, 250)
+}
+
+ut.CSS3DRenderer.prototype.setSceneTransform = function(transform) {
+    let scene = document.querySelector('.css3d-scene')
+    if (scene)
+        scene.style.transform = transform
+}
+
+ut.CSS3DRenderer.prototype.getCameraPosition = function() {
+    let camera = document.querySelector('.css3d-camera')
+    if (camera) {
+        return {
+            x: parseInt(camera.style.left, 10),
+            y: parseInt(camera.style.top, 10),
+        }
+
+    } else {
+        return {
+            x: 0,
+            y: 0,
+        }
+    }
+}
+
+ut.CSS3DRenderer.prototype.setCameraPosition = function(x=0, y=0) {
+    let camera = document.querySelector('.css3d-camera')
+    if (camera) {
+        camera.style.top = y + 'px'
+        camera.style.left = x + 'px'
+    }
 }
